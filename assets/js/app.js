@@ -43,16 +43,10 @@ export default class Sketch {
   }
 
   addObjects() {
-    // this.geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
-    this.geometry = new THREE.PlaneBufferGeometry(0.5, 0.5);
-    // this.geometry = new THREE.SphereBufferGeometry(0.2, 1, 23);
-    // this.material = new THREE.MeshNormalMaterial();
-    // this.material = new THREE.MeshBasicMaterial({
-    //   color: 0xffffff,
-    // });
-    // this.material = new THREE.MeshLambertMaterial();
-
+    this.geometry = new THREE.PlaneBufferGeometry(0.5, 0.5, 100, 100);
+console.log(this.geometry);
     this.material = new THREE.ShaderMaterial({
+      wireframe: true,
       uniforms: {
         time: { value: 1.0 },
         resolution: { value: new THREE.Vector2() },
@@ -67,6 +61,7 @@ export default class Sketch {
 
   render() {
     this.time += 0.05;
+    this.material.uniforms.time.value = this.time;
     this.mesh.rotation.x = this.time / 2000;
     this.mesh.rotation.y = this.time / 1000;
 
@@ -78,7 +73,3 @@ export default class Sketch {
 new Sketch({
   domElement: document.getElementById("container"),
 });
-
-// animation
-
-// function animation(time) {}
