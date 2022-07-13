@@ -122,8 +122,8 @@ export default class Sketch {
   render() {
     this.time += 0.05;
     this.material.uniforms.time.value = this.time;
-    // this.material.uniforms.uProgress.value = this.settings.progress;
-    this.tl.progress(this.settings.progress);
+    this.material.uniforms.uProgress.value = this.settings.progress;
+    // this.tl.progress(this.settings.progress);
     this.mesh.rotation.x = this.time / 2000;
     this.mesh.rotation.y = this.time / 1000;
 
