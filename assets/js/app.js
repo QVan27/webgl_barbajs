@@ -4,18 +4,23 @@ import fragment from "../../shaders/fragment.glsl";
 import vertex from "../../shaders/vertex.glsl";
 import testTexture from "../../assets/img/water.jpg";
 
+const cameraDistance = 600;
+
 export default class Sketch {
   constructor(options) {
     this.container = options.domElement;
     this.width = this.container.offsetWidth;
     this.height = this.container.offsetHeight;
     this.camera = new THREE.PerspectiveCamera(
-      70,
+      30,
       this.width / this.height,
-      0.01,
-      10
+      10,
+      1000
     );
-    this.camera.position.z = 1;
+
+    this.camera.position.z = cameraDistance;
+    this.camera.fov =
+      Math.atan(this.height / 2 / cameraDistance) * (180 / Math.PI) * 2;
 
     this.scene = new THREE.Scene();
 
@@ -37,6 +42,16 @@ export default class Sketch {
     this.height = this.container.offsetHeight;
     this.renderer.setSize(this.width, this.height);
     this.camera.aspect = this.width / this.height;
+
+    this.camera.updateProjectionMatrix();
+
+    // Update WebGL images which overlay HTML images
+    this.camera.fov =
+      Math.atan(this.height / 2 / cameraDistance) * (180 / Math.PI) * 2;
+    // this.materials.forEach((m) => {
+    //   m.uniforms.uResolution.value.x = this.width;
+    //   m.uniforms.uResolution.value.y = this.height;
+    // });
   }
 
   setupResize() {
@@ -44,13 +59,13 @@ export default class Sketch {
   }
 
   addObjects() {
-    this.geometry = new THREE.PlaneBufferGeometry(0.5, 0.5, 100, 100);
-    this.geometry = new THREE.SphereBufferGeometry(0.5, 160, 160);
+    this.geometry = new THREE.PlaneBufferGeometry(500, 200, 100, 100);
+    // this.geometry = new THREE.SphereBufferGeometry(0.5, 160, 160);
     this.material = new THREE.ShaderMaterial({
       // wireframe: true,
       uniforms: {
         time: { value: 1.0 },
-        uTexture: {value: new THREE.TextureLoader().load(testTexture)},
+        uTexture: { value: new THREE.TextureLoader().load(testTexture) },
         resolution: { value: new THREE.Vector2() },
       },
       vertexShader: vertex,
